@@ -1,0 +1,16 @@
+{
+  "name": "boundless-mind",
+  "owner": {
+    "name": "Sören Kress"
+  },
+  "metadata": {
+    "description": "Workbench skills for Claude Code and Codex."
+  },
+  "plugins": [
+    {
+      "name": "workbench",
+      "description": "Suspend and resume work on a project, and capture loose thoughts.",
+      "source": "./plugins/workbench"
+    }
+  ]
+}

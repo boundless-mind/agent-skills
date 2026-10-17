@@ -4,13 +4,23 @@
     "name": "Sören Kress"
   },
   "metadata": {
-    "description": "Workbench skills for Claude Code and Codex."
+    "description": "Workbench and job skills for Claude Code and Codex."
   },
   "plugins": [
     {
       "name": "workbench",
       "description": "Suspend and resume work on a project, and capture loose thoughts.",
       "source": "./plugins/workbench"
+    },
+    {
+      "name": "jobs",
+      "description": "Run a delegated job unattended from its brief and deliver a skimmable result.",
+      "source": "./plugins/jobs"
+    },
+    {
+      "name": "converge",
+      "description": "Converge with Codex on a piece of work through review rounds until no material findings remain.",
+      "source": "./plugins/converge"
     }
   ]
 }

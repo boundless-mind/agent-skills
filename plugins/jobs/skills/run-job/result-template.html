@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RESULT TITLE</title>
+<style>
+  :root {
+    --bg: #fbfbf9; --fg: #1d1d1b; --muted: #6b6b66; --line: #e3e2dc;
+    --card: #ffffff; --accent: #2f5bd3; --warn: #b4580b; --ok: #1f7a4d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161615; --fg: #ecebe6; --muted: #9b9a94; --line: #2e2d2a;
+      --card: #1e1e1c; --accent: #8aa6ff; --warn: #f0a35e; --ok: #6cc59a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+  header p { color: var(--muted); margin: 4px 0 0; font-size: 14px; }
+  h1 { font-size: 26px; line-height: 1.25; margin: 0; }
+  h2 { font-size: 19px; margin: 36px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .tldr { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+          border-radius: 8px; padding: 12px 16px; margin-top: 20px; }
+  .tldr ul { margin: 0; padding-left: 20px; }
+  .status { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 13px;
+            border: 1px solid currentColor; }
+  .status.done { color: var(--ok); } .status.needs-input, .status.failed { color: var(--warn); }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .03em; }
+  .recommendation { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+  details { border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; margin: 10px 0; background: var(--card); }
+  summary { cursor: pointer; font-weight: 600; }
+  code { font-size: 14px; }
+  a { color: var(--accent); }
+  .mermaid { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>RESULT TITLE</h1>
+    <p>Job <code>JOB-SLUG</code> · FINISHED-DATE · <span class="status done">done</span></p>
+  </header>
+
+  <section class="tldr">
+    <!-- At most three bullets: the answer, not a teaser. -->
+    <ul>
+      <li>…</li>
+    </ul>
+  </section>
+
+  <h2>Options</h2>
+  <!-- One row per option. Columns may change to fit the question (e.g. effort, fit, cost, risk). -->
+  <div class="table-wrap"><table>
+    <thead><tr><th>Option</th><th>What it means</th><th>Effort</th><th>Fit</th><th>Risk</th></tr></thead>
+    <tbody><tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr></tbody>
+  </table></div>
+
+  <h2>Recommendation</h2>
+  <div class="recommendation">
+    <!-- What to do and why, in a few sentences. Diagrams welcome: -->
+    <p>…</p>
+    <!-- <pre class="mermaid">flowchart LR; A-->B</pre> -->
+  </div>
+
+  <h2>Assumptions</h2>
+  <!-- Every assumption made instead of asking. The reader corrects these in a follow-up round. -->
+  <div class="table-wrap"><table>
+    <thead><tr><th>Assumption</th><th>Why</th><th>Impact if wrong</th></tr></thead>
+    <tbody><tr><td>…</td><td>…</td><td>…</td></tr></tbody>
+  </table></div>
+
+  <h2>Disagreements</h2>
+  <!-- Only when the job was reviewed: material findings that remained after the last review round.
+       Omit the section otherwise. -->
+  <div class="table-wrap"><table>
+    <thead><tr><th>Part</th><th>Reviewer's position</th><th>Author's position and reason</th></tr></thead>
+    <tbody><tr><td>…</td><td>…</td><td>…</td></tr></tbody>
+  </table></div>
+
+  <h2>Open questions</h2>
+  <ul>
+    <li>… <em>(who or what can answer it)</em></li>
+  </ul>
+
+  <h2>Sources</h2>
+  <!-- File paths with lines, documents with pages, URLs. -->
+  <ol>
+    <li>…</li>
+  </ol>
+
+  <h2>Appendix</h2>
+  <!-- Long material, one <details> per topic. -->
+  <details>
+    <summary>…</summary>
+    <p>…</p>
+  </details>
+</main>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? "dark" : "default" });
+</script>
+</body>
+</html>

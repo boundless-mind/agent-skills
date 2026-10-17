@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "summary",
+    "checklist",
+    "findings"
+  ],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "Two or three sentences on the state of the reviewed work."
+    },
+    "checklist": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Only when the prompt asks for it: what a good answer to the assignment must contain and get right, written before reading the work. Otherwise empty."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "severity",
+          "previous",
+          "location",
+          "issue",
+          "recommendation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Short stable id such as F3. Reuse the id when you maintain a previous finding."
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "material",
+              "minor"
+            ]
+          },
+          "previous": {
+            "type": "string",
+            "enum": [
+              "new",
+              "maintained"
+            ],
+            "description": "maintained: a finding from the previous round that the author's response did not resolve."
+          },
+          "location": {
+            "type": "string",
+            "description": "File and section, heading, table row, or line."
+          },
+          "issue": {
+            "type": "string"
+          },
+          "recommendation": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

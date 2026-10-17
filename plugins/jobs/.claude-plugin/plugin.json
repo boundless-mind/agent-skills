@@ -1,0 +1,7 @@
+{
+  "name": "jobs",
+  "description": "Run a delegated job unattended from its brief and deliver a skimmable result.",
+  "author": {
+    "name": "Sören Kress"
+  }
+}

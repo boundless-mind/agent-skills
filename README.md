@@ -1,6 +1,6 @@
 # agent-skills
 
-Skills for Claude Code, Codex, and OpenCode that help you pause work, pick it up in a new session, and save ideas for later.
+Skills for Claude Code, Codex, and OpenCode that help you pause work, pick it up in a new session, save ideas for later, converge with Codex through review rounds, and run delegated jobs unattended.
 
 ## Plugins
 
@@ -9,6 +9,21 @@ The **workbench** plugin includes three skills:
 - **suspend** saves the current state, reasoning, open questions, and next step in `HANDOFF.md`, and collects loose remarks in `THOUGHTS.md`.
 - **resume** reads the latest handoff, reviews what changed, and brings you up to date on saved thoughts.
 - **thought** captures an idea in `THOUGHTS.md` without acting on it.
+
+The **converge** plugin runs a review loop with Codex:
+
+- **converge** has Codex review a part of your work (a section, table, design, or document), you fix or rebut each finding, and the loop repeats until Codex has no material findings or the round limit (default 5) is reached. Findings that survive the last round are reported as disagreements. A bundled script enforces the round limit and stores each round's findings. It runs in Claude Code only, and needs the [codex-plugin-cc fork](https://github.com/skress/codex-plugin-cc) with `task --output-schema` and a Codex login:
+
+  ```sh
+  claude plugin marketplace add skress/codex-plugin-cc
+  claude plugin install codex@skress-codex --scope user
+  claude plugin install converge@boundless-mind --scope user
+  codex login
+  ```
+
+The **jobs** plugin runs delegated work unattended:
+
+- **run-job** works through a job directory (`brief.md`, `context/`, `out/`) without asking questions, records its assumptions instead, and writes `out/result.html` plus `out/summary.md`. The brief and result templates live next to the skill. Install it with `claude plugin install jobs@boundless-mind` or `codex plugin add jobs@boundless-mind`, and run it headless, for example `claude -p "/jobs:run-job jobs/<slug>"`. A brief with a `review` block makes it converge with Codex on each part and on the whole result. Such jobs need Claude Code with **converge** and its prerequisites installed as shown above; without them, the job fails at the start instead of running unreviewed.
 
 ## Install
 

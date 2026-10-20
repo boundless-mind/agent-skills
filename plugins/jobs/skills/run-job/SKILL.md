@@ -44,7 +44,7 @@ Nobody will answer questions while you work. Wherever you would ask, make the mo
 
    Then set `status: done`.
 
-Delivery is someone else's job: leave pushing, pull requests, and messages to anyone out of it. If the brief's deliverable is code, commit it in your working clone and name the branch in the summary.
+Delivery is someone else's job: the brief's `delivery` field says how the result leaves the sandbox, and someone else carries it out, so leave pushing, pull requests, and messages alone. If the Deliverable section asks for code, commit it in your working clone and name the branch in the summary.
 
 ## `out/summary.md` format
 

@@ -5,7 +5,6 @@ domain: <domain the job belongs to>
 agent: claude            # claude | codex
 subscription: <which plan runs it>
 workstream: <workstream the job serves>
-sandbox: <sandbox the job runs in>
 delivery: none           # how the result leaves the sandbox: none (stays in out/) | commit | pr | repo; what it contains is the Deliverable section
 stop_and_ask: []         # conditions under which the job stops instead of assuming
 review:                  # optional: converge each Deliverable part with a reviewer

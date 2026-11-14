@@ -25,6 +25,16 @@ The **jobs** plugin runs delegated work unattended:
 
 - **run-job** works through a job directory (`brief.md`, `context/`, `out/`) without asking questions, records its assumptions instead, and writes `out/result.html` plus `out/summary.md`. The brief and result templates live next to the skill. Install it with `claude plugin install jobs@boundless-mind` or `codex plugin add jobs@boundless-mind`, and run it headless, for example `claude -p "/jobs:run-job jobs/<slug>"`. A brief with a `review` block makes it converge with Codex on each part and on the whole result. Such jobs need Claude Code with **converge** and its prerequisites installed as shown above; without them, the job fails at the start instead of running unreviewed.
 
+## Templates
+
+`templates/knowledge-home` is the starting layout for the home repository of a knowledge workstream, such as solution-architect work for one customer: `sources/` for what was available when (with a register), `knowledge/` for the current understanding, `tasks/` for adopted work including final decks through git LFS, and one `AGENTS.md` that Claude Code and Codex both read (`CLAUDE.md` imports it). Copy it into a new private repository on the domain's git host, run `git lfs install` once, and fill in the first paragraph of `AGENTS.md`:
+
+```sh
+cp -R templates/knowledge-home ~/work/<domain>/<repo> && cd ~/work/<domain>/<repo> && git init && git lfs install
+```
+
+Jobs don't read the whole repository: their brief lists the files to stage into `context/`.
+
 ## Install
 
 Follow the instructions for each tool you use. Claude Code and Codex support native plugin installation; OpenCode uses the [skills CLI](https://github.com/vercel-labs/skills). To share one copy across tools, use the [shared installation](#shared-installation) option.

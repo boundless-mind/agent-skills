@@ -27,10 +27,10 @@ The **jobs** plugin runs delegated work unattended:
 
 ## Templates
 
-`templates/knowledge-home` is the starting layout for the home repository of a knowledge workstream, such as solution-architect work for one customer: `sources/` for what was available when (with a register), `knowledge/` for the current understanding, `tasks/` for adopted work including final decks through git LFS, and one `AGENTS.md` that Claude Code and Codex both read (`CLAUDE.md` imports it). Copy it into a new private repository on the domain's git host, run `git lfs install` once, and fill in the first paragraph of `AGENTS.md`:
+`templates/knowledge-home` is the starting layout for the home repository of a knowledge workstream, such as solution-architect work for one customer: `sources/` for what was available when (with a register), `knowledge/` for the current understanding, `tasks/` for adopted work (a `deck.md` per deck, the deck itself where it lives), and one `AGENTS.md` that Claude Code and Codex both read (`CLAUDE.md` imports it). Copy it into a new private repository on the domain's git host and fill in the first paragraph of `AGENTS.md`:
 
 ```sh
-cp -R templates/knowledge-home ~/work/<domain>/<repo> && cd ~/work/<domain>/<repo> && git init && git lfs install
+cp -R templates/knowledge-home ~/work/<domain>/<repo> && cd ~/work/<domain>/<repo> && git init
 ```
 
 Jobs don't read the whole repository: their brief lists the files to stage into `context/`.

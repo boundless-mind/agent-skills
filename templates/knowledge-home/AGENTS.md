@@ -12,12 +12,12 @@
   - `dossiers/`: dossiers from private sources, only after the owner reviewed them.
 - `knowledge/`: the current understanding. Every statement names its source (a path under `sources/` or `tasks/`) and has an "as of" date; mark decisions, assumptions and open claims as such.
   - `overview.md`, `systems.md` (the customer's code repositories with URLs: list them, never copy or submodule them), `open-questions.md`, `decisions/` (one file per decision). Add `stakeholders.md` or `glossary.md` when needed.
-- `tasks/YYYY-MM-DD-<slug>/`: work the owner adopted. `brief.md`, and for a deck `deck.md` (audience, purpose, storyline slide by slide, speaker notes, sources, reusable parts) next to the final PPTX/PDF (git LFS). The PPTX decides the final appearance; `deck.md` keeps its reasoning reusable.
+- `tasks/YYYY-MM-DD-<slug>/`: work the owner adopted. `brief.md`, and for a deck `deck.md`: audience, purpose, storyline, sources, reusable parts, and a link to the accepted version where the deck lives (e.g. Google Slides). A deck written in Markdown (e.g. Slidev) keeps its source and assets here; `deck.md` then doesn't repeat the slide text.
 
 ## Working here
 
 - When the owner adopts a task's result, update the `knowledge/` files it affects, with source and "as of" date.
-- A new deck starts from a copy of the last accepted deck in `tasks/` or from the approved template. Render it and check every slide before handing it over.
+- A new deck starts from the last accepted deck's `deck.md` (and its source, if it has one) or from the approved template. Render it and check every slide before handing it over. Exports that can be regenerated stay out of git.
 - Dates are `YYYY-MM-DD`, file and folder names lowercase with dashes.
 
 ## Trust

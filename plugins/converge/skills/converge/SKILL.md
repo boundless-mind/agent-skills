@@ -5,7 +5,7 @@ description: Converge with Codex on a piece of work through review rounds until 
 
 # Converge
 
-Get a piece of work (a **part**: a section, a table, a design, a document) reviewed by Codex, and iterate until Codex has no **material** findings left or the round limit is reached. Codex reviews read-only and classifies each finding as material (changes a verdict, number, recommendation, or conclusion; a factual error; an unsupported claim; a required item missing) or minor.
+Get a piece of work (a **part**: a section, a table, a design, a document) reviewed by Codex, and iterate until Codex has no **material** findings left or the round limit is reached. Codex reviews read-only and classifies each finding as **material** (a defect under the criteria: it changes a verdict, number, recommendation, or conclusion; a factual error; an unsupported claim; a bug; a required item missing), **proposal** (the work meets the criteria, but Codex would raise the bar: a stricter requirement, a further safeguard, a broader scope), or minor. Only material findings keep a part open: review rounds fix defects, they don't grow the contract.
 
 `review-round.mjs` in this skill's directory runs one round: it enforces the round limit, calls Codex with a fixed rubric and schema, stores the findings, and reports the result. Leave the round counting and the stored findings to it.
 
@@ -58,12 +58,14 @@ node "<this skill's directory>/review-round.mjs" --check --cwd "<workspace root>
    It prints one JSON line with `status`. A round that runs past `--timeout` (default 540 seconds) fails and cancels its Codex task, so a retry can start; raise the timeout only together with the Bash timeout. Each round first cancels Codex tasks of this session that were left marked running by a killed process, and lists them as `recovered`.
 
 3. **Act on the status:**
-   - `converged`: no material findings. Apply minor findings you agree with when they are cheap; the part is done.
-   - `open` with rounds left: read the findings file. For **every** finding, either fix it or reject it with a reason, then write `<dir>/round-<N>-response.md` with one line per finding id (`F3 fixed: …` or `F3 rejected: …`). The next round refuses to run without this file. Go to step 1.
+   - `converged`: no material findings. Apply minor findings you agree with when they are cheap; the part is done. Proposals stay open (see below).
+   - `open` with rounds left: read the findings file. For **every** finding, either fix it or reject it with a reason, then write `<dir>/round-<N>-response.md` with one line per finding id (`F3 fixed: …` or `F3 rejected: …`; a proposal: `F4 deferred: for the owner`). The next round refuses to run without this file. Go to step 1.
    - `open` with `rounds_left: 0`, or `max-rounds` (exit 3): stop iterating. Each remaining material finding becomes a **disagreement**: record Codex's position and yours, with your reason.
    - `error` (exit 2): fix what the error names when it is yours to fix (a missing or incomplete response file, a missing request), then rerun. Otherwise retry once; if it fails again, record "review unavailable" with the error for this part and continue without review.
    - A `warning` alongside any status says the round ran in a different Codex thread than the previous one. The findings still stand; mention it in the report.
 
-4. **Report** for the part: rounds used, and either "converged" or its list of disagreements. In a job, disagreements go into the result's Disagreements section; interactively, show them to the user.
+4. **Report** for the part: rounds used, either "converged" or its list of disagreements, and the proposals. In a job, disagreements go into the result's Disagreements section; interactively, show them to the user.
+
+**Proposals are decisions for the owner, not work items.** Don't build a proposal into the work on your own, even a good one: list each with what it would add and what it would cost (code, state, tests, review rounds), and adopt it only when the user, or in a job the brief, asks for it. In a job they go into the result's open decisions. If you think a proposal points at a real defect under the criteria, say so; then it is material and gets fixed.
 
 A rejected finding needs a reason that would convince a careful reader, not just a different opinion. When Codex maintains a finding after your rejection, weigh it again before rejecting it a second time: a disagreement that survives to the end is a signal for the reader that the question is genuinely uncertain.

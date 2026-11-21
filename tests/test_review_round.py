@@ -164,6 +164,22 @@ class ReviewRoundTest(unittest.TestCase):
         self.assertIn("--output-schema", argv)
         self.assertNotIn("--write", argv)
 
+    def test_proposals_do_not_block_convergence_and_are_counted(self):
+        self.replies(payload([finding("F1", "proposal"), finding("F2", "minor")]))
+        code, out = self.run_round()
+        self.assertEqual(code, 0)
+        self.assertEqual((out["status"], out["material"], out["proposals"], out["minor"]), ("converged", 0, 1, 1))
+        record = json.loads(Path(out["findings_file"]).read_text(encoding="utf8"))
+        self.assertEqual((record["material"], record["proposals"], record["minor"]), (0, 1, 1))
+
+    def test_the_rubric_separates_defects_from_stricter_proposals(self):
+        self.replies(payload([]))
+        self.run_round()
+        prompt = self.calls()[0]["prompt"]
+        self.assertIn("- proposal:", prompt)
+        self.assertIn("stricter", prompt)
+        self.assertIn("don't block convergence", prompt)
+
     def test_next_round_requires_a_response_and_points_codex_at_it(self):
         self.replies(payload([finding("F1", "material")]), payload([]))
         self.run_round()

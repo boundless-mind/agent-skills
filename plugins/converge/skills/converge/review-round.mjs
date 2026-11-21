@@ -284,7 +284,7 @@ function requireResponse(dir, last) {
   if (missing.length) fail(`${file} does not answer finding(s) ${missing.join(", ")}; answer each one as "<id> fixed: …" or "<id> rejected: …"`);
 }
 
-const SEVERITIES = new Set(["material", "minor"]);
+const SEVERITIES = new Set(["material", "proposal", "minor"]);
 const PREVIOUS = new Set(["new", "maintained"]);
 const TEXT_FIELDS = ["id", "location", "issue", "recommendation"];
 
@@ -367,7 +367,8 @@ function buildPrompt({ round, dir, request, job, checklist, cwd }) {
     "The request below names what is under review and the criteria it must meet. You are not limited to the files it names: read the assignment, the inputs, earlier work, and anything else in the workspace you need to judge the work, as you would if you had been asked to review it directly. Check claims against their sources, not against the author's description of the work. A section headed \"Author's notes\" is the author's view, not established fact. Cite the files you rely on.",
     "",
     "Classify each finding:",
-    "- material: it would change a verdict, number, estimate, recommendation, or conclusion; it is a factual error or an unsupported claim; or it leaves out something the assignment or the criteria require.",
+    "- material: a defect under the criteria and the contract the work states: it would change a verdict, number, estimate, recommendation, or conclusion; it is a factual error, an unsupported claim, or a bug (a security hole in what the work promises included); or it leaves out something the assignment or the criteria require.",
+    "- proposal: the work meets the criteria, but you would raise the bar: a stricter requirement, a further safeguard or guarantee, or a broader scope than the criteria ask for. Proposals don't block convergence; the author brings them to the owner, who decides whether the contract grows. A missing safeguard that the criteria don't require is a proposal, not a material finding.",
     "- minor: wording, style, structure, or additions that change no conclusion.",
     "",
     "Report a material finding only when you are confident it holds. An empty findings list means the work is ready; do not invent findings to have something to say."
@@ -385,7 +386,7 @@ function buildPrompt({ round, dir, request, job, checklist, cwd }) {
     lines.push(
       "",
       `This is review round ${round}. Your findings from the previous round are in ${shown(previous, cwd)}; the author's response to each finding is in ${shown(response, cwd)}.`,
-      "For each previous material finding: if the change or the author's reasoning resolves it, drop it. If not, report it again with the same id, previous: \"maintained\", and why the response does not resolve it. Then review the updated work for anything new."
+      "For each previous material finding: if the change or the author's reasoning resolves it, drop it. If not, report it again with the same id, previous: \"maintained\", and why the response does not resolve it. Do not repeat a proposal the author deferred to the owner, and do not turn it into a material finding. Then review the updated work for anything new."
     );
     const first = readJson(path.join(dir, "round-1.json"));
     if (first.checklist?.length) {
@@ -460,6 +461,7 @@ async function reviewRound(opts) {
 
   const output = payload.structuredOutput;
   const material = output.findings.filter((finding) => finding.severity === "material").length;
+  const proposals = output.findings.filter((finding) => finding.severity === "proposal").length;
   const previousThread = round > 1 ? readJson(path.join(dir, `round-${last}.json`)).threadId : null;
   const record = {
     round,
@@ -469,7 +471,8 @@ async function reviewRound(opts) {
     summary: output.summary,
     checklist: opts.checklist ? output.checklist : [],
     material,
-    minor: output.findings.length - material,
+    proposals,
+    minor: output.findings.length - material - proposals,
     findings: output.findings
   };
   const findingsFile = path.join(dir, `round-${round}.json`);
@@ -481,6 +484,7 @@ async function reviewRound(opts) {
     max: opts.max,
     rounds_left: opts.max - round,
     material,
+    proposals,
     minor: record.minor,
     findings_file: findingsFile
   };

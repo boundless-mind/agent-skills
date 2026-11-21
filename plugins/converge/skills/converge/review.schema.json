@@ -41,8 +41,10 @@
             "type": "string",
             "enum": [
               "material",
+              "proposal",
               "minor"
-            ]
+            ],
+            "description": "material: a defect under the criteria. proposal: a stricter requirement, safeguard or scope than the criteria ask for; it doesn't block convergence and goes to the owner. minor: wording, style, structure."
           },
           "previous": {
             "type": "string",

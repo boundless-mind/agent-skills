@@ -12,10 +12,11 @@ The **workbench** plugin includes three skills:
 
 The **converge** plugin runs a review loop with Codex:
 
-- **converge** has Codex review a part of your work (a section, table, design, or document), you fix or rebut each finding, and the loop repeats until Codex has no material findings or the round limit (default 5) is reached. Findings that survive the last round are reported as disagreements. A bundled script enforces the round limit and stores each round's findings. It runs in Claude Code only, and needs the [codex-plugin-cc fork](https://github.com/skress/codex-plugin-cc) with `task --output-schema` and a Codex login:
+- **converge** has Codex review a part of your work (a section, table, design, or document), you fix or rebut each finding, and the loop repeats until Codex has no material findings or the round limit (default 5) is reached. Findings that survive the last round are reported as disagreements. Proposals for a stricter contract (a further safeguard or scope than your criteria ask for) don't keep the loop going: they are listed for you to decide. A bundled script enforces the round limit and stores each round's findings. It runs in Claude Code only, and needs the [codex-plugin-cc fork](https://github.com/skress/codex-plugin-cc) with `task --output-schema` and a Codex login:
 
   ```sh
   claude plugin marketplace add skress/codex-plugin-cc
+  claude plugin marketplace add boundless-mind/agent-skills
   claude plugin install codex@skress-codex --scope user
   claude plugin install converge@boundless-mind --scope user
   codex login
